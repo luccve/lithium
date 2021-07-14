@@ -83,7 +83,7 @@ def events():
                 exit()
             if event.key == K_SPACE or event.key == K_RETURN:
                 if selecao == 1:
-                    import isometric
+                    import lithium
                 if selecao == 2:
                     f_creditos()
 
