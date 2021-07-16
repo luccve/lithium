@@ -4,6 +4,7 @@ from pygame import mixer
 from pygame.draw import rect
 from pygame.image import load
 from pygame.locals import*
+from random import randrange
 import os
 
 pygame.init()
@@ -17,8 +18,8 @@ print(pasta_imagens)
 #Display
 LARGURA = 1280
 ALTURA = 720
-pos_x = LARGURA/2
-pos_y = ALTURA/2
+x_player = LARGURA/2
+y_player = ALTURA/2
 XeY = 0
 TELA = (1280, 720)
 display.set_caption('Lithium')
@@ -32,8 +33,8 @@ VELOCIDADE_PLAYER = 15
 sprite_enya = image.load(os.path.join(pasta_imagens, 'enya.png')).convert_alpha()
 sprite_enya.set_colorkey([0, 255, 0])
 
-chao = image.load(os.path.join(pasta_imagens, 'grama.png')).convert_alpha()
-chao.set_colorkey([0, 0, 0])
+chao_img = image.load(os.path.join(pasta_imagens, 'grama.png')).convert_alpha()
+chao_img.set_colorkey([0, 0, 0])
 
 vertice_img = image.load(os.path.join(pasta_imagens, 'vertice.png')).convert_alpha()
 vertice_img.set_colorkey([0, 0, 0])
@@ -41,70 +42,87 @@ vertice_img.set_colorkey([0, 0, 0])
 npc_img = image.load(os.path.join(pasta_imagens, 'npc.png')).convert_alpha()
 npc_img.set_colorkey([0, 0, 0])
 
+pinheiro_img = image.load(os.path.join(pasta_imagens, 'pinheiro.png')).convert_alpha()
+npc_img.set_colorkey([0, 0, 0])
+
+
+
 def mouse():
     global XeY
     if event.type == pygame.MOUSEBUTTONDOWN:
         XeY = pygame.mouse.get_pos()
         print(XeY)
 
+def textos():
+    pass
+
 class Player(sprite.Sprite):
-    global pos_x, pos_y
-    def __init__(self):
+    #X e Y definimos a posição inicias nc = n de cena da sprite inicial
+    def __init__(self, x, y, nc):
         sprite.Sprite.__init__(self)
         self.frames_enya = []
         for m in range(4):
             self.img = sprite_enya.subsurface((0 ,m*32),(30,32))
             self.frames_enya.append(self.img)
-        self.c_cena = 0
+        self.c_cena = nc
 
         self.image = self.frames_enya[self.c_cena]
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
-        self.rect.center = (pos_x, pos_y)
+        self.rect.center = (x, y)
 
     def movimento(self, n = 0):
         self.c_cena = n
 
-    def update(self):
+    def update(self, x, y):
         self.image = self.frames_enya[self.c_cena]
-        self.rect.center = (pos_x, pos_y)
+        self.rect.center = (x, y)
 
 
 class NPC(sprite.Sprite):
-    def __init__(self):
+    #XeY definimos a posição e nc = número de cena
+    def __init__(self, x, y, nc):
         sprite.Sprite.__init__(self)
 
         self.npc_lista = []
         for m in range(3):
             self.img = npc_img.subsurface((0, m*32), (30, 32))
             self.npc_lista.append(self.img)
-        self.c_cena = 0
+        self.c_cena = nc
 
         self.image = self.npc_lista[self.c_cena]
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
-        self.rect.center = (333, 143)
-    
-    def cena(self, n=0):
+        self.rect.center = (x, y)
+
+    def cena(self, n):
         self.c_cena = n
+
+    def pos_npc(self, x, y):
+        self.rect.x = x
+        self.rect.y = y
+
+    def update(self):
+        self.image = self.npc_lista[self.c_cena]
     
-        
-class Chao(sprite.Sprite):
-    def __init__(self):
+      
+class Ambiente(sprite.Sprite):
+    #XeY posição img = imagem do objeto
+    def __init__(self, x, y, img):
         sprite.Sprite.__init__(self)
-        self.image = chao
+        self.image = img
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
-        self.rect.center = (pos_x, pos_y)
+        self.rect.center = (x, y)
 
 
-class Vertice(sprite.Sprite):
+class Limite_mov_player(sprite.Sprite):
     def __init__(self):
         sprite.Sprite.__init__(self)
         self.image = vertice_img
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
-        self.rect.center = (pos_x, pos_y)
+        self.rect.center = (x_player, y_player)
     
     def update(self):
         pass
@@ -117,30 +135,52 @@ class Vertice(sprite.Sprite):
 #sound_back.set_volume(0.25)
 
 
-#Sprite do chao
+#Grupos
 
-#Sprite do player
+ambiente_sprites = sprite.Group()
+obstaculos_sprites = sprite.Group()
+npcs_sprites = sprite.Group()
 player_sprite = sprite.Group()
 
-chao = Chao()
-player_sprite.add(chao)
 
-vertice = Vertice()
-#player_sprite.add(vertice)
+chao = Ambiente((LARGURA/2), (ALTURA/2), chao_img)
+ambiente_sprites.add(chao)
 
-player = Player()
+pinheiros = []
+for pin in range(2):
+    x = 50
+    y = 500
+
+    for pin in range(10):
+        x += 100
+        pinheiros.append(Ambiente(x, y, pinheiro_img))
+    
+    x = 50
+    y = 100
+
+    for pin in range(10):
+        x += 100
+        pinheiros.append(Ambiente(x, y, pinheiro_img)) 
+
+
+for p in pinheiros:
+    ambiente_sprites.add(p)
+
+
+limite = Limite_mov_player()
+player = Player(x_player, y_player, 0)
+nicolau = NPC(300, 300, 0)
+
+
+#ambiente_sprites.add(limite)
+
+obstaculos_sprites.add(limite)
+
 player_sprite.add(player)
 
-#Grupo do NPC
-npc_sprites =  sprite.Group()
-amigo = NPC()
-npc_sprites.add(amigo)
+npcs_sprites.add(nicolau)
 
 
-#Sprite do Fundo
-obstaculos_sprites = sprite.Group()
-vertice = Vertice()
-obstaculos_sprites.add(vertice)
 
 
 while True:
@@ -149,12 +189,10 @@ while True:
     JANELA.fill((174, 249, 255))
     
     colisao = sprite.spritecollide(player, obstaculos_sprites, False, pygame.sprite.collide_mask)
-    colisao_npc = sprite.spritecollide(player, npc_sprites, False, pygame.sprite.collide_mask)
 
     for event in pygame.event.get():
 
         mouse()
-
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
@@ -163,33 +201,37 @@ while True:
             if event.type == pygame.KEYDOWN:
 
                 if event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                    pos_y += VELOCIDADE_PLAYER
+                    y_player += VELOCIDADE_PLAYER
                     player.movimento(n=0)
 
+
                 if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                    pos_x -= VELOCIDADE_PLAYER
+                    x_player -= VELOCIDADE_PLAYER
                     player.movimento(n=1)
 
                 if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                    pos_x += VELOCIDADE_PLAYER
+                    x_player += VELOCIDADE_PLAYER
                     player.movimento(n=2)
 
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
-                    pos_y -= VELOCIDADE_PLAYER
+                    y_player -= VELOCIDADE_PLAYER
                     player.movimento(n=3)
         else:
-            pos_x = (LARGURA/2)
-            pos_y = (ALTURA/2)
-        
+            x_player = (LARGURA/2)
+            y_player = (ALTURA/2)
+
+    colisao_npc = sprite.spritecollide(nicolau, player_sprite, False, pygame.sprite.collide_mask)
     if colisao_npc:
-        pos_x -= 1
-        pos_y -= 1
+        x_player -= 1
+        y_player -= 1
+       
 
     obstaculos_sprites.draw(JANELA)
+    ambiente_sprites.draw(JANELA)
     player_sprite.draw(JANELA)
-    npc_sprites.draw(JANELA)
+    npcs_sprites.draw(JANELA)
 
-    player_sprite.update()
-    npc_sprites.update()
+    player_sprite.update(x_player,y_player)
+    npcs_sprites.update()
 
     display.flip()  
