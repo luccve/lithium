@@ -2,6 +2,8 @@
 Projeto final da cadeira introdução a programação - Linguagem python.
 IFPE - CAMPUS PAULISTA
 DESENVOLVIDO POR ESTEVÃO LUCAS E VINICIUS LIMA
+https://www.instagram.com/thelucasi/
+https://www.instagram.com/vinylima_7/
 
 USO DE CÓDIGO SOMENTE PARA ESTUDO.
 
