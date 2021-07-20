@@ -1,6 +1,7 @@
 import os
 import pygame
 from pygame import display, sprite, image, transform, mixer, draw
+from pygame import rect
 from pygame.locals import*
 from random import randrange
 import construir
@@ -34,6 +35,7 @@ VELOCIDADE_PLAYER = 15
 x_init_player = 950
 y_init_player = 294
 FLAG_CONTROL = True
+n_caixa = 0
 
 #Objetos
 chao = construir.Ambiente((LARGURA/2), (ALTURA/2), imagem.chao_img)
@@ -76,21 +78,27 @@ while True:
     player_sprite.draw(JANELA)
     npcs_sprites.draw(JANELA)
     frente_sprites.draw(JANELA)
+    
 
-    interacao.controlador(VELOCIDADE_PLAYER, FLAG_CONTROL, player)
+    interacao.controlador(VELOCIDADE_PLAYER, FLAG_CONTROL, player, n_caixas = 3)
 
-    #Condições
 
     if colisao_npc:
+        n = interacao.n_enters()
+
+        dialogo1.caixa(n)
 
         textos.add(dialogo1)
         textos.draw(JANELA)
+
 
 
     if 0 > player.rect.x or player.rect.x > 1280 or 0 > player.rect.y or player.rect.y > 720:
         player.rect.x = x_init_player
         player.rect.y = y_init_player
 
+
     player_sprite.update(player.rect.x,player.rect.y)
     npcs_sprites.update()
+    textos.update()
     display.flip()  

@@ -81,11 +81,11 @@ class Limite_mov_player(sprite.Sprite):
 
 '''Na classe texto teremos um padrão de recorte assim como nas sprites 32x32.Agora nessa que vai abrigar os textos teremos o padrão de recorte de uma imagem lista em 1280x240px. Nossa sprite de texto terá n_caixas camadas de acordo com o diálalogo'''
 
-
 class Textos(sprite.Sprite):
     def __init__(self,x, y, img, n_caixas):
         sprite.Sprite.__init__(self)
 
+        self.n_caixas = n_caixas
         self.lista_de_msg = []
 
         for m in range(n_caixas):
@@ -100,8 +100,10 @@ class Textos(sprite.Sprite):
         #Por padrão de posicionamento na tela(640, 600)
         self.rect.center = (x, y)
     
-    def caixa(self, n):
-        self.caixa_txt = n
+    def caixa(self, enter):
+        self.caixa_txt = enter
+        print(F"class: {enter}")
+
     
     def update(self):
         self.image = self.lista_de_msg[self.caixa_txt]
