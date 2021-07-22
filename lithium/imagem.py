@@ -24,8 +24,8 @@ FPS = pygame.time.Clock()
 sprite_enya = image.load(os.path.join(pasta_imagens, 'enya.png')).convert_alpha()
 sprite_enya.set_colorkey([0, 250, 0])
 
-chao_img = image.load(os.path.join(pasta_imagens, 'grama.png')).convert_alpha()
-chao_img.set_colorkey([0, 0, 0])
+fundo_img = image.load(os.path.join(pasta_imagens, 'grama.png')).convert_alpha()
+fundo_img.set_colorkey([0, 0, 0])
 
 vertice_img = image.load(os.path.join(pasta_imagens, 'vertice.png')).convert_alpha()
 vertice_img.set_colorkey([0, 0, 0])

@@ -24,11 +24,11 @@ class Player(sprite.Sprite):
         self.c_cena = n
     
 
-    def update(self, x_player, y_player):
+    def update(self):
+        self.rect.x
+        self.rect.y
         self.image = self.frames_enya[self.c_cena]
-        self.rect.x = x_player
-        self.rect.y = y_player
-
+        
 
 class NPC(sprite.Sprite):
     #XeY definimos a posição e nc = número de cena
@@ -44,7 +44,9 @@ class NPC(sprite.Sprite):
         self.image = self.npc_lista[self.c_cena]
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
-        self.rect.center = (x, y)
+        self.rect.x = x
+        self.rect.y = y
+        
 
     def cena(self, n):
         self.c_cena = n
@@ -54,8 +56,11 @@ class NPC(sprite.Sprite):
         self.rect.y = y
 
     def update(self):
+        self.rect.x
+        self.rect.y
         self.image = self.npc_lista[self.c_cena]
 
+'''Observação: as varíaveis de ambiente apresentam movimentação por isso é necessário update das posiçãoes em tela seguindo a proporção do display'''
 
 class Ambiente(sprite.Sprite):
     #XeY posição img = imagem do objeto
@@ -66,6 +71,10 @@ class Ambiente(sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.rect.center = (x, y)
 
+    def update(self):
+        self.rect.x 
+        self.rect.y
+        
 
 class Limite_mov_player(sprite.Sprite):
     def __init__(self, x, y, img):
@@ -102,7 +111,7 @@ class Textos(sprite.Sprite):
     
     def caixa(self, enter):
         self.caixa_txt = enter
-        print(F"class: {enter}")
+        #print(F"class: {enter}")
 
     
     def update(self):
