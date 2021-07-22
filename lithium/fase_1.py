@@ -1,4 +1,3 @@
-import os
 import pygame
 from pygame import display, sprite, image, transform, mixer, draw
 from pygame import rect
@@ -36,6 +35,7 @@ x_init_player = 604
 y_init_player = 360
 FLAG_CONTROL = True
 FLAG_TEXTO = False
+
 
 
 #Objetos
@@ -100,10 +100,6 @@ while True:
         FLAG_TEXTO = False
 
     interacao.controlador(VELOCIDADE, FLAG_CONTROL, player, FLAG_TEXTO , max_caixas = 3)
-
-    if 0 > player.rect.x or player.rect.x > 1280 or 0 > player.rect.y or player.rect.y > 720:
-        player.rect.x = x_init_player
-        player.rect.y = y_init_player
 
 
     player_sprite.update()

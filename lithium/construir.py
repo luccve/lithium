@@ -17,6 +17,8 @@ class Player(sprite.Sprite):
         self.image = self.frames_enya[self.c_cena]
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
+        self.x_init = x
+        self.y_init = y
         self.rect.x = x
         self.rect.y = y
 
@@ -25,6 +27,15 @@ class Player(sprite.Sprite):
     
 
     def update(self):
+        if 50 > self.rect.x or 50 > self.rect.y:
+            self.rect.x += 50
+            self.rect.y += 50
+
+        if self.rect.x > 1200 or self.rect.y > 680:
+            self.rect.x -= 50
+            self.rect.y -= 50
+        
+
         self.rect.x
         self.rect.y
         self.image = self.frames_enya[self.c_cena]
@@ -116,3 +127,71 @@ class Textos(sprite.Sprite):
     
     def update(self):
         self.image = self.lista_de_msg[self.caixa_txt]
+
+
+class Monster(pygame.sprite.Sprite):
+    #X e Y definimos a posição inicias nc = n de cena da sprite inicial
+    def __init__(self,x, nc, img):
+        pygame.sprite.Sprite.__init__(self)
+
+        self.estado = 0
+        self.frames_life = []
+        self.pos_x = []
+        self.pos_y = []
+
+        for m in range(13):
+            self.img = img.subsurface((22*m, 0), (22, 33))
+            self.frames_life.append(self.img)
+        self.c_cena = nc
+
+        self.image = self.frames_life[self.c_cena]
+        #self.image = pygame.transform.scale(self.image,(500,500))
+        self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
+        self.rect.x = x
+        self.rect.y = randrange(50,700,75)
+        
+
+    def morte(self, img):
+        self.estado = 1
+        self.frames_dead = []
+
+        for m in range(15):
+            self.img = img.subsurface((33*m, 0), (33, 32))
+            self.frames_dead.append(self.img)
+        
+        self.c_cena = 0
+
+        self.image = self.frames_dead[self.c_cena]
+        self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
+
+
+    def update(self):
+        self.image
+
+        if self.estado == 0:
+            if self.c_cena>=12:
+                self.c_cena = 0
+            self.c_cena += 0.25
+            self.image = self.frames_life[int(self.c_cena)]
+            self.rect.x +=1
+            self.pos_x.append(self.rect.x)
+            self.pos_y.append(self.rect.y)
+
+        if self.estado == 1:
+
+            if self.c_cena>=14:
+                self.c_cena = 0
+                self.estado = 0
+                self.rect.x = self.pos_x[0] 
+                self.rect.y = self.pos_y[0]
+
+            self.c_cena += 0.10
+            self.image = self.frames_dead[int(self.c_cena)]
+            self.rect.x =  self.pos_x[-1]
+            self.rect.y = self.pos_y[-1]
+
+        
+        if self.rect.x >= 1280:
+            self.rect.x = 0

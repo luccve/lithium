@@ -5,6 +5,7 @@ from pygame import rect
 from pygame.locals import*
 from random import randrange
 
+
 pygame.init()
 
 #Diretórios
@@ -13,7 +14,8 @@ pasta_imagens = os.path.join(pasta_principal, 'sprites')
 pasta_sons = os.path.join(pasta_principal, 'musica')
 
 #Variavéis
-FONTE1 = pygame.font.SysFont("Arial", 20, True, False)
+FONTE1 = pygame.font.SysFont("Chiller", 40, True, False)
+
 enter = 0
 
 '''O controle importado do arquivo interacao, recebe a velocidade de movimentação, a flag que o funcionamento dos controles,e o objeto a ser controlado nesse caso o player'''
@@ -69,7 +71,7 @@ def controlador(VELOCIDADE = 10, FLAG_CONTROL = True, player = object, FLAG_TEXT
                     enter = 0
 
                 if enter == 3:
-                    
+
                     if event.key == pygame.K_ESCAPE:
                         print("Estágio 2")
                     
@@ -84,10 +86,12 @@ def controlador(VELOCIDADE = 10, FLAG_CONTROL = True, player = object, FLAG_TEXT
         enter = 0
     
     
-    
         
 def n_enters():
     global enter
     return enter
 
-
+def textoscomfundo(msg='', x = 680, y = 600):
+    pygame.draw.rect(display.get_surface(), (0, 0, 0), (650, 580, 600, 400))
+    texte_render = FONTE1.render(msg, True, (255,255,255))
+    display.get_surface().blit(texte_render, (x, y))

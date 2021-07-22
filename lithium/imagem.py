@@ -41,3 +41,10 @@ portao_img = image.load(os.path.join(pasta_imagens, 'portão.png')).convert_alph
 arbusto_img = image.load(os.path.join(pasta_imagens, 'arbusto.png')).convert_alpha()
 
 dialogo_1_img = image.load(os.path.join(pasta_imagens, 'd1.png')).convert_alpha()
+
+dialogo_2_img = image.load(os.path.join(pasta_imagens, 'd2.png')).convert_alpha()
+
+skeleto_walk = image.load(os.path.join(pasta_imagens, 'walk.png')).convert_alpha()
+skeleto_walk.set_colorkey([0, 0, 0])
+
+skeleto_dead = image.load(os.path.join(pasta_imagens, 'Skeletondead.png')).convert_alpha()
