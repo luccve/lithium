@@ -1,9 +1,8 @@
 import os
-from time import sleep
 import pygame
 from pygame import display, sprite, image, transform,mixer,draw
 from pygame.locals import*
-from random import randint, randrange
+from random import randrange
 import imagem
 
 class Player(sprite.Sprite):
@@ -183,7 +182,7 @@ class Monster(pygame.sprite.Sprite):
     def morte(self):
         self.estado['morto'] =  True
 
-    def update(self,mov):
+    def update(self):
 
         '''if self.estado['morto'] == True:
             self.c_cena = 13
@@ -196,7 +195,7 @@ class Monster(pygame.sprite.Sprite):
             self.c_cena = 0
         self.c_cena += 0.25
         self.image = self.frames[int(self.c_cena)]
-        self.rect.x +=mov
+        self.rect.x +=1
         self.pos_x.append(self.rect.x)
         self.pos_y.append(self.rect.y)
         
@@ -204,136 +203,34 @@ class Monster(pygame.sprite.Sprite):
             self.rect.x = 0
 
 
-class Projetil(sprite.Sprite):
+class Spear(sprite.Sprite):
     #X e Y definimos a posição inicias nc = n de cena da sprite inicial
-    def __init__(self, classe, img, x_size, y_size, Q, mov):
+    def __init__(self, player, img):
         sprite.Sprite.__init__(self)
-        self.mov = mov
-        self.Q = Q
-        self.classe = classe
-        self.tiroaletorio = randint(1, 595)
-        self.frames = []
-        self.img = img
-
-        #Gerando imagens
-        for m in range(Q):
-            self.temp = self.img.subsurface((x_size*m, 0), (x_size, y_size))
-            self.frames.append(self.temp)
-
-        self.c_cena = 0
-        self.image = self.frames[self.c_cena]
-
+        self.lançar = False
+        self.image = img
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
 
-        #Posição
-
-        self.rect.x = classe.rect.centerx
-        self.rect.y = classe.rect.centery
-
-    def update(self):
-        self.rect.x += self.mov
-
-        if self.c_cena >= (self.Q - 1):
-            self.c_cena = 0
-
-        self.c_cena += 0.25
-        self.image = self.frames[int(self.c_cena)]
-        
-
-class Trap(pygame.sprite.Sprite):
-    #X e Y definimos a posição inicias nc = n de cena da sprite inicial
-    def __init__(self,player, nc):
-        pygame.sprite.Sprite.__init__(self)
-        
-        self.frames = []
-        self.img = imagem.trap
-        
-        #Gerando imagens
-        for m in range(7):
-            self.temp = self.img.subsurface((28*m, 0), (28, 27))
-            self.frames.append(self.temp)
-        
-                
-        self.c_cena = nc
-        self.image = self.frames[self.c_cena]
-
-        self.rect = self.image.get_rect()
-        self.mask = pygame.mask.from_surface(self.image)
-
-        #Posição
-        
-        self.rect.x = player.rect.x
-        self.rect.y = player.rect.y
-
-   
-    def update(self):
-        
-        
-        if self.c_cena>=6:
-            self.c_cena = 0
-        self.c_cena += 0.17
-        self.image = self.frames[int(self.c_cena)]
-        self.rect.x
-        self.rect.y
-            
-        if self.rect.x >= 1280:
-            self.rect.x = 0        
-
-
-class Aranha(pygame.sprite.Sprite):
-    #X e Y definimos a posição inicias nc = n de cena da sprite inicial
-    def __init__(self, x, nc, mov):
-        pygame.sprite.Sprite.__init__(self)
-        self.mov = mov
-        self.direcao = 0
-        self.estado = 0
-        self.pos_x = list()
-        self.pos_y = list()
-        self.listaAtack = list()
-        self.listaMorte = list()
-        self.img_Atack = imagem.aranhaAtack
-        self.img_Morto = imagem.aranhaMorte
-
-        for m in range(5):
-            self.temp = self.img_Atack.subsurface((245*m, 0), (245, 125))
-            self.listaAtack.append(self.temp)
-
-        for m in range(5):
-            self.temp = self.img_Morto.subsurface((240*m, 0), (240, 153))
-            self.listaMorte.append(self.temp)
-        
-        self.c_cena = nc
-        self.image = self.listaAtack[self.c_cena]
-
-        self.rect = self.image.get_rect()
-        self.mask = pygame.mask.from_surface(self.image)
-
-        #Posição
-        self.x_init = x
-        self.y_init = 360
+        self.x_init = player.rect.centerx
+        self.y_init = player.rect.y
 
         self.rect.x = self.x_init
         self.rect.y = self.y_init
-        
+    def mov(self, m):
+        self.lançar = True
+        '''if m == 0:
+            self.rect.y += 10
+        elif m == 1:
+            self.rect.x -= 10
+        elif m == 2:
+            self.rect.x += 10
+        elif m == 3:
+            self.rect.y -= 10'''
+    
     def update(self):
+        if self.lançar:
+            self.rect.x
+            self.rect.y
 
-        if self.c_cena >= 4:
-            self.c_cena = 0
-
-        self.c_cena += 0.10
-        self.image = self.listaAtack[int(self.c_cena)]
-
-        self.rect.x = 50
-        self.rect.y += self.mov
-        self.pos_x.append(self.rect.x)
-        self.pos_y.append(self.rect.y)
-
-        if self.rect.y > 595:
-            self.mov = - 1
-        if self.rect.y == 0:
-            self.mov = 1
-
-        
-
-
+            

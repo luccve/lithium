@@ -23,7 +23,7 @@ m = 1
 
 '''O controle importado do arquivo interacao, recebe a velocidade de movimentação, a flag que o funcionamento dos controles,e o objeto a ser controlado nesse caso o player'''
 
-def controlador(grupo, VELOCIDADE = 10, FLAG_CONTROL = True, player = object, FLAG_TEXTO = True, max_caixas = 4):
+def controlador(grupo=None, VELOCIDADE = 10, FLAG_CONTROL = True, player = object, FLAG_TEXTO = True, max_caixas = 4):
 
     global enter, m
 
@@ -69,8 +69,7 @@ def controlador(grupo, VELOCIDADE = 10, FLAG_CONTROL = True, player = object, FL
                     player.movimento(n=3)
                     m = 3
 
-                if event.key == pygame.K_SPACE:
-                    
+                if event.key == pygame.K_BACKSPACE:
                     
                         if m == 0:
                             spear = construir.Spear(player, imagem.spearB)
@@ -110,7 +109,8 @@ def controlador(grupo, VELOCIDADE = 10, FLAG_CONTROL = True, player = object, FL
     if enter < 0 or enter > max_caixas:
         enter = 0
     
-          
+    
+        
 def n_enters():
     global enter
     return enter

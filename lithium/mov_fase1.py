@@ -1,11 +1,12 @@
+
+from fase_21 import fase_2
 import os
 import pygame
+import imagem
 from pygame import display, sprite, image, transform,draw,mixer
 from pygame import rect
 from pygame.locals import*
 from random import randrange
-import construir
-import imagem
 
 
 pygame.init()
@@ -19,16 +20,12 @@ pasta_sons = os.path.join(pasta_principal, 'musica')
 FONTE1 = pygame.font.SysFont("Chiller", 40, True, False)
 
 enter = 0
-m = 1
 
 '''O controle importado do arquivo interacao, recebe a velocidade de movimentação, a flag que o funcionamento dos controles,e o objeto a ser controlado nesse caso o player'''
 
-def controlador(grupo, VELOCIDADE = 10, FLAG_CONTROL = True, player = object, FLAG_TEXTO = True, max_caixas = 4):
+def controlador(VELOCIDADE = 10, FLAG_CONTROL = True, player = object, FLAG_TEXTO = True, max_caixas = 4):
 
-    global enter, m
-
-    grupo.draw(display.get_surface())
-    grupo.update()
+    global enter
 
 
     for event in pygame.event.get():
@@ -49,40 +46,21 @@ def controlador(grupo, VELOCIDADE = 10, FLAG_CONTROL = True, player = object, FL
                 if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     player.rect.y += VELOCIDADE
                     player.movimento(n=0)
-                    m = 0
-    
 
                 if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                     player.rect.x -= VELOCIDADE
                     player.movimento(n=1)
-                    m = 1
                     
 
                 if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     player.rect.x += VELOCIDADE
                     player.movimento(n=2)
-                    m = 2
                     
 
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
                     player.rect.y -= VELOCIDADE
                     player.movimento(n=3)
-                    m = 3
 
-                if event.key == pygame.K_SPACE:
-                    
-                    
-                        if m == 0:
-                            spear = construir.Spear(player, imagem.spearB)
-                        if m == 1:
-                            spear = construir.Spear(player, imagem.spearL)
-                        if m == 2:
-                            spear = construir.Spear(player, imagem.spearR)
-                        if m == 3:
-                            spear = construir.Spear(player, imagem.spearT)
-                        
-                        grupo.add(spear)
-                        spear.mov(m)
                 
                 #Controladores de dialógos
                 if FLAG_TEXTO:
@@ -101,7 +79,7 @@ def controlador(grupo, VELOCIDADE = 10, FLAG_CONTROL = True, player = object, FL
                         print("Estágio 2")
                     
                     elif event.key == pygame.K_SPACE:
-                        print("Estágio 2.1")
+                        fase_2()
 
         else:
             player.rect.x = 733
@@ -110,7 +88,8 @@ def controlador(grupo, VELOCIDADE = 10, FLAG_CONTROL = True, player = object, FL
     if enter < 0 or enter > max_caixas:
         enter = 0
     
-          
+    
+        
 def n_enters():
     global enter
     return enter

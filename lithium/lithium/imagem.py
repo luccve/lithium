@@ -55,13 +55,3 @@ spearL = image.load(os.path.join(pasta_imagens, 'SpearL.png')).convert_alpha()
 spearR = image.load(os.path.join(pasta_imagens, 'SpearR.png')).convert_alpha()
 spearT = image.load(os.path.join(pasta_imagens, 'SpearT.png')).convert_alpha()
 spearB = image.load(os.path.join(pasta_imagens, 'SpearB.png')).convert_alpha()
-
-trap = image.load(os.path.join(pasta_imagens, 'Trap.png')).convert_alpha()
-npc_img.set_colorkey([255, 255, 255])
-
-aranhaAtack = image.load(os.path.join(pasta_imagens, 'aranhaAtack.png')).convert_alpha()
-aranhaMorte = image.load(os.path.join(pasta_imagens, 'aranhaMorte.png')).convert_alpha()
-
-aranhaPoison =  image.load(os.path.join(pasta_imagens, 'poison.png')).convert_alpha()
-
-fire_img = image.load(os.path.join(pasta_imagens, 'fire.png')).convert_alpha()

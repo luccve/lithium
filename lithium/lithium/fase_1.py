@@ -4,7 +4,7 @@ from pygame import rect
 from pygame.locals import*
 from random import randrange
 import construir
-import mov_fase1
+import interacao
 import imagem
 
 pygame.init()
@@ -69,42 +69,42 @@ frente_sprites.add(arbusto)
 player_sprite.add(player)
 npcs_sprites.add(nicolau)
 
-def fase_1():
-    while True:
-        FPS.tick(60)
-        JANELA.fill((0, 0, 0))
-        
-        #Definido colisões
-        colisao_npc = sprite.spritecollide(nicolau, player_sprite, False, pygame.sprite.collide_mask)
-        
 
-        #Objetos na tela divididos por grupos
-        
-        fundo_sprites.draw(JANELA)
-        player_sprite.draw(JANELA)
-        npcs_sprites.draw(JANELA)
-        frente_sprites.draw(JANELA)
-        
+while True:
+    FPS.tick(60)
+    JANELA.fill((0, 0, 0))
+    
+    #Definido colisões
+    colisao_npc = sprite.spritecollide(nicolau, player_sprite, False, pygame.sprite.collide_mask)
+    
 
-        if colisao_npc:
+    #Objetos na tela divididos por grupos
+    
+    fundo_sprites.draw(JANELA)
+    player_sprite.draw(JANELA)
+    npcs_sprites.draw(JANELA)
+    frente_sprites.draw(JANELA)
+    
 
-            FLAG_TEXTO = True
-            n = mov_fase1.n_enters()#Está retornando os valores quando clicado enter
+    if colisao_npc:
 
-            dialogo1.caixa(n)
+        FLAG_TEXTO = True
+        n = interacao.n_enters()#Está retornando os valores quando clicado enter
 
-            textos.add(dialogo1)
-            textos.draw(JANELA)
+        dialogo1.caixa(n)
 
-        else:
-            FLAG_TEXTO = False
+        textos.add(dialogo1)
+        textos.draw(JANELA)
 
-        mov_fase1.controlador(VELOCIDADE, FLAG_CONTROL, player, FLAG_TEXTO , max_caixas = 3)
+    else:
+        FLAG_TEXTO = False
+
+    interacao.controlador(VELOCIDADE, FLAG_CONTROL, player, FLAG_TEXTO , max_caixas = 3)
 
 
-        player_sprite.update()
-        textos.update()
-        fundo_sprites.update()
-        npcs_sprites.update()
+    player_sprite.update()
+    textos.update()
+    fundo_sprites.update()
+    npcs_sprites.update()
 
-        display.flip()  
+    display.flip()  

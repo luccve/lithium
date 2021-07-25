@@ -49,40 +49,31 @@ def controlador(grupo, VELOCIDADE = 10, FLAG_CONTROL = True, player = object, FL
                 if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     player.rect.y += VELOCIDADE
                     player.movimento(n=0)
-                    m = 0
+                    
     
 
                 if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                     player.rect.x -= VELOCIDADE
                     player.movimento(n=1)
-                    m = 1
+                    
                     
 
                 if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     player.rect.x += VELOCIDADE
                     player.movimento(n=2)
-                    m = 2
+                    
                     
 
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
                     player.rect.y -= VELOCIDADE
                     player.movimento(n=3)
-                    m = 3
-
+                    
+                
                 if event.key == pygame.K_SPACE:
                     
+                    trap = construir.Trap(player, 0)                                                        
+                    grupo.add(trap)
                     
-                        if m == 0:
-                            spear = construir.Spear(player, imagem.spearB)
-                        if m == 1:
-                            spear = construir.Spear(player, imagem.spearL)
-                        if m == 2:
-                            spear = construir.Spear(player, imagem.spearR)
-                        if m == 3:
-                            spear = construir.Spear(player, imagem.spearT)
-                        
-                        grupo.add(spear)
-                        spear.mov(m)
                 
                 #Controladores de dialógos
                 if FLAG_TEXTO:
@@ -110,7 +101,8 @@ def controlador(grupo, VELOCIDADE = 10, FLAG_CONTROL = True, player = object, FL
     if enter < 0 or enter > max_caixas:
         enter = 0
     
-          
+    
+        
 def n_enters():
     global enter
     return enter

@@ -1,4 +1,3 @@
-from fase_1 import fase_1
 import pygame
 from pygame.locals import *
 from sys import exit
@@ -84,7 +83,7 @@ def events():
                 exit()
             if event.key == K_SPACE or event.key == K_RETURN:
                 if selecao == 1:
-                    fase_1()
+                    import lithium
                 if selecao == 2:
                     f_creditos()
 
