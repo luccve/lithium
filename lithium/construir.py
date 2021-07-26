@@ -90,7 +90,7 @@ class Ambiente(sprite.Sprite):
         self.rect.y
         
 
-class Limite_mov_player(sprite.Sprite):
+class Fundo(sprite.Sprite):
     def __init__(self, x, y, img):
         sprite.Sprite.__init__(self)
         self.image = img

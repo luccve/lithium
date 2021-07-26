@@ -1,27 +1,26 @@
-from fase_1 import fase_1
+
 import pygame
+import imagem
+import som
 from pygame.locals import *
 from sys import exit
- 
+from fase_1 import fase_1
+from fase_21 import fase_21
+from fase_22 import fase_22
 
 LARGURA = 1280
 ALTURA = 720
 FPS = 30
 
-selecao = 1
+selecao = 0
+intro = 0
+fase = 1
 
-MENU1 = ' Novo Jogo '
-MENU2 = ' Creditos  '
-MENU3 = ' Instruções'
-MENU4 = '   Sair    '
-
-FONTE_MENU = 'kristen itc'
-TAMANHO_FONTE = 40
-COR_FONTE_SELECIONADA = (255, 0, 0)
-COR_FONTE = (255, 255, 255)
-
-MEIOTELA_X = LARGURA/2
-MEIOTELA_Y = ALTURA/2
+#Music
+menusom = som.menu_som
+menusom2 = som.esc_som
+enter_menu = som.enter_som
+save = som.startfase_som
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -32,23 +31,71 @@ botao_enter = False
 def tela():
     return screen.fill((0, 0, 0))
 
+def instrucoes():
+        
+    flag_instrucoes = True
+    while flag_instrucoes:
+        screen.fill((0, 0, 0))
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                exit()
+            if event.type == KEYDOWN:
+                if event.key == K_RETURN:
+                    flag_instrucoes = False
+              
+        screen.blit(imagem.instrucoes_img, (0, 0))
+        pygame.display.update()
+
+def fases():
+    global fase
+    
+    flag_fase = True
+    while flag_fase:
+        tela()
+        for event in pygame.event.get():
+            
+            if event.type == QUIT:
+                pygame.quit()
+                exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    fase=0
+                    flag_fase = False
+                if event.key == K_LEFT or event.key == K_a:
+                    fase-=1
+                    menusom2.play()
+                if event.key == K_RIGHT or event.key == K_d:
+                    fase+=1
+                    menusom2.play()
+                if event.key == K_RETURN:
+                    save.play()
+                    if fase == 1:
+                        fase_1()
+                    if fase == 2:
+                        fase_21()
+                    if fase == 3:
+                        fase_22()
+        
+        #Implementação da fase 
+        if fase > 3:
+            fase = 1
+        if fase < 1:
+            fase = 3   
+        if fase == 1:
+            tela()
+            screen.blit(imagem.stage1, (0, 0))
+
+        if fase == 2:
+            tela()
+            screen.blit(imagem.stage2, (0, 0))
+
+        if fase == 3:
+            tela()
+            screen.blit(imagem.stage3, (0, 0))
+        pygame.display.flip()
 
 def f_creditos():
-
-    font1 = pygame.font.SysFont(FONTE_MENU, 40, True, False)
-    msg1 = "Desenvolvido por Estevão Silva e Vinicius Lima"
-    txt1 = font1.render(msg1, True, (255, 0, 0))
-
-    font2 = pygame.font.SysFont(FONTE_MENU, 26, True, False)
-
-    msg2 = "Baseado no livro Lithium não publicado da autora Melissa Lacerda @mel_vespertina"
-    txt2 = font2.render(msg2, True, (255, 255, 255))
-
-    msg3 = "Música original feito por Rafael Luiz @rafaleohh"
-    txt3 = font2.render(msg3, True, (255, 255, 255))
-
-    msg4 = "Pressione Enter pra voltar pro menu"
-    txt4 = font2.render(msg4, True, (0, 0, 255))
 
     creditos_menu = True
     while creditos_menu:
@@ -60,15 +107,12 @@ def f_creditos():
             if event.type == KEYDOWN:
                 if event.key == K_RETURN:
                     creditos_menu = False
-        screen.blit(txt1, (80, 200))
-        screen.blit(txt2, (20, 400))
-        screen.blit(txt3, (240, 600))
-        screen.blit(txt4, (650, 50))
+        screen.blit(imagem.creditos_img, (0, 0))
         pygame.display.update()
 
 
 def events():
-    global selecao
+    global selecao,intro,fase
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -76,115 +120,87 @@ def events():
 
         if event.type == KEYDOWN:
             if event.key == K_s or event.key == K_DOWN:
+                menusom.play()
                 selecao += 1
             if event.key == K_w or event.key == K_UP:
                 selecao -= 1
+                menusom.play()
             if event.key == K_ESCAPE:
+                menusom.play()
                 pygame.quit()
                 exit()
             if event.key == K_SPACE or event.key == K_RETURN:
-                if selecao == 1:
+                intro +=1
+                enter_menu.play()
+                if selecao == 1:#Novo jogo
                     fase_1()
-                if selecao == 2:
+                if selecao == 2:#Creditos
                     f_creditos()
+                if selecao == 3:#Instruções
+                    instrucoes()
+                if selecao == 4:#Fases
+                    fases()
 
-                if selecao == 4:
+                if selecao == 5:#Configurações
+                    pass
+                    '''Em construção'''
+                if selecao == 6:#Sair
                     pygame.quit()
                     exit()
 
-
 def menu():
     global selecao
-    if selecao == 1:
-
+    if intro == 0:
+        
         tela()
+        screen.blit(imagem.creditos_img, (0, 0))
+    else:
+        if selecao == 1:
 
-        fonte = pygame.font.SysFont(FONTE_MENU, TAMANHO_FONTE, True, False)
-        novo_jogo = fonte.render(MENU1, True, COR_FONTE_SELECIONADA)
-        screen.blit(novo_jogo, (MEIOTELA_X-50, MEIOTELA_Y-50))
+            tela()
 
-        fonte = pygame.font.SysFont(FONTE_MENU, TAMANHO_FONTE, True, False)
-        creditos = fonte.render(MENU2, True, COR_FONTE)
-        screen.blit(creditos, (MEIOTELA_X-70, MEIOTELA_Y+20))
+            screen.blit(imagem.menu1, (0, 0))
 
-        fonte = pygame.font.SysFont(FONTE_MENU, TAMANHO_FONTE, True, False)
-        instrucoes = fonte.render(MENU3, True, COR_FONTE)
-        screen.blit(instrucoes, (MEIOTELA_X-70, MEIOTELA_Y+90))
+        if selecao == 2:
 
-        fonte = pygame.font.SysFont(FONTE_MENU, TAMANHO_FONTE, True, False)
-        sair = fonte.render(MENU4, True, COR_FONTE)
-        screen.blit(sair, (MEIOTELA_X-70, MEIOTELA_Y+160))
+            tela()
 
-    if selecao == 2:
+            screen.blit(imagem.menu2, (0, 0))
 
-        tela()
+        if selecao == 3:
 
-        fonte = pygame.font.SysFont(FONTE_MENU, TAMANHO_FONTE, True, False)
-        novo_jogo = fonte.render(MENU1, True, COR_FONTE)
-        screen.blit(novo_jogo, (MEIOTELA_X-70, MEIOTELA_Y-50))
+            tela()
 
-        fonte = pygame.font.SysFont(FONTE_MENU, TAMANHO_FONTE, True, False)
-        creditos = fonte.render(MENU2, True, COR_FONTE_SELECIONADA)
-        screen.blit(creditos, (MEIOTELA_X-50, MEIOTELA_Y+20))
+            screen.blit(imagem.menu3, (0, 0))
 
-        fonte = pygame.font.SysFont(FONTE_MENU, TAMANHO_FONTE, True, False)
-        instrucoes = fonte.render(MENU3, True, COR_FONTE)
-        screen.blit(instrucoes, (MEIOTELA_X-70, MEIOTELA_Y+90))
+        if selecao == 4:
 
-        fonte = pygame.font.SysFont(FONTE_MENU, TAMANHO_FONTE, True, False)
-        sair = fonte.render(MENU4, True, COR_FONTE)
-        screen.blit(sair, (MEIOTELA_X-70, MEIOTELA_Y+160))
+            tela()
 
-    if selecao == 3:
+            screen.blit(imagem.menu4, (0, 0))
 
-        tela()
+        if selecao == 5:
 
-        fonte = pygame.font.SysFont(FONTE_MENU, TAMANHO_FONTE, True, False)
-        novo_jogo = fonte.render(MENU1, True, COR_FONTE)
-        screen.blit(novo_jogo, (MEIOTELA_X-70, MEIOTELA_Y-50))
+            tela()
+            screen.blit(imagem.menu5, (0, 0))
 
-        fonte = pygame.font.SysFont(FONTE_MENU, TAMANHO_FONTE, True, False)
-        creditos = fonte.render(MENU2, True, COR_FONTE)
-        screen.blit(creditos, (MEIOTELA_X-70, MEIOTELA_Y+20))
+        if selecao == 6:
+            tela()
+            screen.blit(imagem.menu6, (0, 0))
 
-        fonte = pygame.font.SysFont(FONTE_MENU, TAMANHO_FONTE, True, False)
-        instrucoes = fonte.render(MENU3, True, COR_FONTE_SELECIONADA)
-        screen.blit(instrucoes, (MEIOTELA_X-50, MEIOTELA_Y+90))
 
-        fonte = pygame.font.SysFont(FONTE_MENU, TAMANHO_FONTE, True, False)
-        sair = fonte.render(MENU4, True, COR_FONTE)
-        screen.blit(sair, (MEIOTELA_X-70, MEIOTELA_Y+160))
+        if selecao < 1:
+            selecao = 6
 
-    if selecao == 4:
+        if selecao >= 7:
+            selecao = 1
 
-        tela()
-
-        fonte = pygame.font.SysFont(FONTE_MENU, TAMANHO_FONTE, True, False)
-        novo_jogo = fonte.render(MENU1, True, COR_FONTE)
-        screen.blit(novo_jogo, (MEIOTELA_X-70, MEIOTELA_Y-50))
-
-        fonte = pygame.font.SysFont(FONTE_MENU, TAMANHO_FONTE, True, False)
-        creditos = fonte.render(MENU2, True, COR_FONTE)
-        screen.blit(creditos, (MEIOTELA_X-70, MEIOTELA_Y+20))
-
-        fonte = pygame.font.SysFont(FONTE_MENU, TAMANHO_FONTE, True, False)
-        instrucoes = fonte.render(MENU3, True, COR_FONTE)
-        screen.blit(instrucoes, (MEIOTELA_X-70, MEIOTELA_Y+90))
-
-        fonte = pygame.font.SysFont(FONTE_MENU, TAMANHO_FONTE, True, False)
-        sair = fonte.render(MENU4, True, COR_FONTE_SELECIONADA)
-        screen.blit(sair, (MEIOTELA_X-50, MEIOTELA_Y+160))
-
-    if selecao < 1:
-        selecao = 5
-
-    if selecao > 5:
-        selecao = 1
-
+        
 
 while True:
-
+    tela()
+    
     events()
     menu()
 
-    pygame.display.update()
+    pygame.display.flip()

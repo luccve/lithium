@@ -65,3 +65,26 @@ aranhaMorte = image.load(os.path.join(pasta_imagens, 'aranhaMorte.png')).convert
 aranhaPoison =  image.load(os.path.join(pasta_imagens, 'poison.png')).convert_alpha()
 
 fire_img = image.load(os.path.join(pasta_imagens, 'fire.png')).convert_alpha()
+
+instrucoes_img = image.load(os.path.join(pasta_imagens, 'instrucoes.png')).convert_alpha()
+creditos_img = image.load(os.path.join(pasta_imagens, 'creditos.png')).convert_alpha()
+
+stage1 = image.load(os.path.join(pasta_imagens, 'stage1.png')).convert_alpha()
+stage2 = image.load(os.path.join(pasta_imagens, 'stage2.png')).convert_alpha()
+stage3 = image.load(os.path.join(pasta_imagens, 'stage3.png')).convert_alpha()
+
+menu1 = image.load(os.path.join(pasta_imagens, '1.png')).convert_alpha()
+menu2 = image.load(os.path.join(pasta_imagens, '2.png')).convert_alpha()
+menu3 = image.load(os.path.join(pasta_imagens, '3.png')).convert_alpha()
+menu4 = image.load(os.path.join(pasta_imagens, '4.png')).convert_alpha()
+menu5 = image.load(os.path.join(pasta_imagens, '5.png')).convert_alpha()
+menu6 = image.load(os.path.join(pasta_imagens, '6.png')).convert_alpha()
+
+vida4 = image.load(os.path.join(pasta_imagens, 'vida4.png')).convert_alpha()
+vida3 = image.load(os.path.join(pasta_imagens, 'vida3.png')).convert_alpha()
+vida2 = image.load(os.path.join(pasta_imagens, 'vida2.png')).convert_alpha()
+vida1 = image.load(os.path.join(pasta_imagens, 'vida1.png')).convert_alpha()
+
+background2 =  image.load(os.path.join(pasta_imagens, 'background2.png')).convert_alpha()
+
+background3 = image.load(os.path.join(pasta_imagens, 'background3.png')).convert_alpha()

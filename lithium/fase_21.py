@@ -1,24 +1,21 @@
-#def fase_21():
 
-#combat aranha ou cobra
+
+#combat skeleton
 
 from pygame import sprite
 from pygame.constants import KEYDOWN, K_ESCAPE, K_r, QUIT
-import restart
-import mov_fase21
+import mov_fases
 import construir
 import imagem
 import pygame
-import interacao
-from random import randint, randrange
-from time import sleep, time
+import funcoes
+
 
 pygame.init()
 
 
-def fase_2():
+def fase_21():
     #tela
-
     screen = (1280,720)
     JANELA = pygame.display.set_mode(screen,0,32)
     pygame.display.set_caption('Lithium')
@@ -36,6 +33,7 @@ def fase_2():
     FLAG_TERMINOU_D2 = False
 
     #Grupos
+    fundo_grup = sprite.Group()
     monstros = pygame.sprite.Group()
     sprite_player = pygame.sprite.Group()
     npcs = pygame.sprite.Group()
@@ -43,7 +41,7 @@ def fase_2():
     textos = sprite.Group()
     
 
-    #Aparecer aleatoríamente os 6 esqueletos
+    #Criando aleatoríamente 6 esqueletos
     for i in range(6):
         skeleton = construir.Monster(0, 0)
         lista_skeleton.append(skeleton)
@@ -54,42 +52,46 @@ def fase_2():
     player = construir.Player(x_init_player,y_init_player, 1, imagem.sprite_enya)
     nicolau = construir.NPC(1100, 300, 0, imagem.npc_img)
     d2 = construir.Textos(640, 360, imagem.dialogo_2_img, 2)
+    background = construir.Ambiente(640, 360, imagem.background2)
 
 
-    #Adicionando 
+    #Adicionando objetos ao grupo
 
     sprite_player.add(player)
     npcs.add(nicolau)
     textos.add(d2)
+    fundo_grup.add(background)
 
 
-
+    #Game
     while True:
-        #Desenhando
+        
         FPS.tick(speed)
         JANELA.fill((0, 0, 0))
+        fundo_grup.draw(JANELA)
 
-        mov_fase21.controlador(trap_group,VELOCIDADE=50 ,player = player, FLAG_TEXTO=True, max_caixas=1)
+        mov_fases.movfase21(trap_group,VELOCIDADE=50 ,player = player, FLAG_TEXTO=True, max_caixas=1)
 
-        n = mov_fase21.n_enters()
+        n = mov_fases.n_enters()
 
         d2.caixa(n)
 
+        
         textos.draw(JANELA)
 
         if n > 0:
             FLAG_TERMINOU_D2 = True
             textos.remove(d2)
 
-
+        #O jogo começa depois do start inicial
         if FLAG_TERMINOU_D2:
             for skeleto in lista_skeleton:
                 colisao_trap = pygame.sprite.spritecollide(skeleto, trap_group, True, pygame.sprite.collide_mask)
                 if colisao_trap:
                     
                     pontos += 1
-                    passou-=1
-
+                    
+                    #Realocando objetos da memoria
                     monstros.remove(skeleto)
                     lista_skeleton.remove(skeleto)
 
@@ -98,44 +100,47 @@ def fase_2():
                     monstros.add(skeleton)
                 
                 if skeleto.rect.x == 1200:
-                    pontos -= 1
+                    
                     passou+=1
             
+           
             #Condições de Game Over
-            if passou > 5:
-                JANELA.fill((0, 0, 0))
-                interacao.textoscomfundo(f'Já passaram {passou} Esqueletos.',200,20)
             if passou > 10:
                 pontos=0
                 passou=0
-                lista_skeleton = []
-                restart.gameover(JANELA,trap_group,player) 
                 
-            if pontos >=20:
-                mov = 2
-            if pontos >=50:
-                mov = 3
+                funcoes.gameover(JANELA,trap_group,player) 
+                '''Função restart'''
+            if pontos >= 20:
+                mov = 6
+            if pontos >= 50:
+                mov = 10
 
             colisao_player = pygame.sprite.spritecollide(player, monstros, True, pygame.sprite.collide_mask)
             if colisao_player:
                 pontos=0
                 passou=0
-                lista_skeleton = []
-                restart.gameover(JANELA,trap_group,player)
+                
+                funcoes.gameover(JANELA,trap_group,player)
                 
                 '''Função restart'''
-                    
+
+
+            #Desenhando objetos        
             sprite_player.draw(JANELA)
             npcs.draw(JANELA)
             monstros.draw(JANELA)
 
-
-            interacao.textoscomfundo(f"PONTOS: {pontos}", 1000, 50)
-
+            #Avisos
+            funcoes.texto(f"PONTOS: {pontos}", 1000, 50)
+            funcoes.texto(f'Já passaram {passou} de 11 Esqueletos. Para Game Over!.',150,20,fonte='arial',tamanho=22)
+            
+            #Atualizando objetos dando movimentação
             sprite_player.update()
             npcs.update()
             monstros.update(mov)
 
+        #Atualizando
         pygame.display.flip() 
 
-fase_2()
+
