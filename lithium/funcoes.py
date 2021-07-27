@@ -1,7 +1,9 @@
 import os
 import pygame
 from pygame import display
+from pygame import image
 from pygame.locals import*
+import imagem
 
 
 
@@ -50,7 +52,7 @@ def gameover(screen,grupo,player,die=True):
                         exit()
 
             
-            texto('Game Over! Pressione a tecla R para jogar novamente.',100,100)
-            texto('Pressione a tecla ESC para jogar sair do jogo.',300,300)         
+            display.get_surface().blit(imagem.backgroundGameOver, (0,0))
+                     
             pygame.display.update()
 

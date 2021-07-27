@@ -1,6 +1,7 @@
 #combat aranha ou cobra
 
 from pygame import sprite
+from pygame import display
 from pygame.constants import KEYDOWN, K_ESCAPE, K_r, QUIT
 from pygame.display import list_modes
 import mov_fases
@@ -95,6 +96,7 @@ def fase_22():
                 if pontos == 100:
                     bossAranha.empty()
                     poisonAranha.empty()
+                    #display.get_surface().blit(imagem.backgroundVictory, (0,0))
 
             #Condições de Restart
             if colisao_aranha:
@@ -105,6 +107,7 @@ def fase_22():
                 funcoes.gameover(JANELA,poisonAranha, player)
                 pontos = 0
                 spear_grupo.empty()
+
             #Inteligência de ataque da Aranha
             if pontos < 100:
                 if aranha.rect.centery == player.rect.centery or aranha.rect.centery == player.rect.centery+randint(1,100) or aranha.rect.centery == player.rect.centery - randint(1, 100):

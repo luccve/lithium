@@ -88,3 +88,7 @@ vida1 = image.load(os.path.join(pasta_imagens, 'vida1.png')).convert_alpha()
 background2 =  image.load(os.path.join(pasta_imagens, 'background2.png')).convert_alpha()
 
 background3 = image.load(os.path.join(pasta_imagens, 'background3.png')).convert_alpha()
+
+backgroundGameOver = image.load(os.path.join(pasta_imagens, 'gameover.png')).convert_alpha()
+
+backgroundVictory = image.load(os.path.join(pasta_imagens, 'victory.png')).convert_alpha()
