@@ -1,0 +1,23 @@
+'''
+Lithium game
+
+imagem 
+-> O arquivo imagem fica responsável por ser um banco de todas as imagens dentro do jogo
+som
+-> Banco de sons SFX e backsound.
+construir
+-> O arquivo contruir importa todas as classes contruturas necessárias naquela fase especifica do jogo
+
+mov_fases
+-> Representa funções de movimentação e updade.
+
+funcoes
+-> Funcoes afins que não se encaixa em movimentação.
+
+Fases
+-> Todas as fases do jogo.
+
+menu
+-> Menu do game arquivo principal de inicialização, na versão 4 entrou com som, faltando implementar as configurações.
+
+'''
