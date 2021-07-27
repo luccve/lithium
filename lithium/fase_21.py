@@ -86,8 +86,10 @@ def fase_21():
         #O jogo começa depois do start inicial
         if FLAG_TERMINOU_D2:
             for skeleto in lista_skeleton:
-                colisao_trap = pygame.sprite.spritecollide(skeleto, trap_group, True, pygame.sprite.collide_mask)
-                if colisao_trap:
+
+                colisao_trap_monstro = pygame.sprite.spritecollide(skeleto, trap_group, True, pygame.sprite.collide_mask)
+
+                if colisao_trap_monstro:
                     
                     pontos += 1
                     
@@ -102,39 +104,78 @@ def fase_21():
                 if skeleto.rect.x == 1200:
                     
                     passou+=1
-            
-           
-            #Condições de Game Over
-            if passou > 10:
-                pontos=0
-                passou=0
-                
-                funcoes.gameover(JANELA,trap_group,player) 
-                '''Função restart'''
+
+            #Desenhando objetos
+            sprite_player.draw(JANELA)
+            npcs.draw(JANELA)
+            monstros.draw(JANELA)
+        
+
+            #Aumentando a dificuldade
             if pontos >= 20:
                 mov = 6
             if pontos >= 50:
                 mov = 10
-
-            colisao_player = pygame.sprite.spritecollide(player, monstros, True, pygame.sprite.collide_mask)
-            if colisao_player:
-                pontos=0
-                passou=0
-                
-                funcoes.gameover(JANELA,trap_group,player)
-                
-                '''Função restart'''
-
-
-            #Desenhando objetos        
-            sprite_player.draw(JANELA)
-            npcs.draw(JANELA)
-            monstros.draw(JANELA)
+ 
 
             #Avisos
             funcoes.texto(f"PONTOS: {pontos}", 1000, 50)
             funcoes.texto(f'Já passaram {passou} de 11 Esqueletos. Para Game Over!.',150,20,fonte='arial',tamanho=22)
-            
+
+            #Condições de Game Over
+            if passou > 10:
+                pontos=0
+                passou=0
+                monstros.empty()
+                lista_skeleton = []
+
+                funcoes.gameover(JANELA,trap_group,player) 
+
+                '''Função restart'''
+
+                #Recontruindo os esquelestos
+                for c in range(6):
+                    skeleton = construir.Monster(0, 0)
+                    lista_skeleton.append(skeleton)
+                    monstros.add(skeleton)
+
+
+            colisao_player_monstro = pygame.sprite.spritecollide(player, monstros, True, pygame.sprite.collide_mask)
+
+            if colisao_player_monstro:
+                pontos = 0
+                passou = 0
+                monstros.empty()
+                lista_skeleton = []
+
+                funcoes.gameover(JANELA, trap_group, player)
+
+                '''Função restart'''
+
+                #Recontruindo os esquelestos
+                for c in range(6):
+                    skeleton = construir.Monster(0, 0)
+                    lista_skeleton.append(skeleton)
+                    monstros.add(skeleton)
+
+
+            #Condição de vitória 
+            if pontos > 100:
+                pontos = 0
+                passou = 0
+                trap_group.empty()
+                monstros.empty()
+                lista_skeleton= []
+
+                funcoes.victory(player)
+
+                #Recontruindo os esqueletos
+                for c in range(6):
+                    skeleton = construir.Monster(0, 0)
+                    lista_skeleton.append(skeleton)
+                    monstros.add(skeleton)
+
+
             #Atualizando objetos dando movimentação
             sprite_player.update()
             npcs.update()

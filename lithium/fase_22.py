@@ -90,14 +90,10 @@ def fase_22():
             #Colisões do ataque do player com a aranha
             colisao_fire1 = pygame.sprite.spritecollide(aranha, spear_grupo, True, pygame.sprite.collide_mask)
 
-            #Condições de vitória
+            #Reduzindo a vida da aranha
             if colisao_fire1:
                 pontos += 10
-                if pontos == 100:
-                    bossAranha.empty()
-                    poisonAranha.empty()
-                    #display.get_surface().blit(imagem.backgroundVictory, (0,0))
-
+                    
             #Condições de Restart
             if colisao_aranha:
                 funcoes.gameover(JANELA,poisonAranha,player)
@@ -135,6 +131,13 @@ def fase_22():
                 
             if pontos <= 99 and pontos > 75:
                 JANELA.blit(imagem.vida1,(500,50))
+
+            #tela de vitória
+            if pontos > 100:
+                poisonAranha.empty()
+                spear_grupo.empty()
+                funcoes.victory(player)
+                pontos = 0
                 
             
             sprite_player.update()

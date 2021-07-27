@@ -56,3 +56,28 @@ def gameover(screen,grupo,player,die=True):
                      
             pygame.display.update()
 
+
+def victory(player, die=True):
+
+    while die:
+        display.get_surface().fill((0, 0, 0))
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                exit()
+
+            if event.type == KEYDOWN:
+                if event.key == K_r:
+                    player.rect.x = 1100
+                    player.rect.y = 360
+
+                    die = False
+
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    exit()
+
+            display.get_surface().blit(imagem.backgroundVictory, (0, 0))
+
+            pygame.display.update()
